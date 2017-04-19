@@ -2,4 +2,3 @@
 __pycache__
 db.mysql
 .DS_Store
-venv
