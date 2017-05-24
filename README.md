@@ -5,7 +5,9 @@
 
 **templates** : (appname)/templates/(appname)/~.html
 
+
 app 내에서 공통적으로 사용되는 템플릿 : (appname)/templates/(appname)/base.html 으로 생성
+
 >{% extends 'base.html' %} 로 프로젝트 폴더(ham) 내 base.html을 확장할 것
 
 >app 공통 템플릿 내부 컨텐츠 블록 :  {% block (appname) %}
