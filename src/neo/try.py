@@ -6,8 +6,8 @@ driver = GraphDatabase.driver(uri, auth=("neo4j", "900416"))
 def print_friends_of(name):
     with driver.session() as session:
         with session.begin_transaction() as tx:
-            for record in tx.run("MATCH (a:Movie)-[r:directed_by]->(f:Director) "
+            for record in tx.run("MATCH (a:Person)-[]->(f:Store) "
                                  "RETURN f.name"):
                 print(record["f.name"])
 
-print_friends_of("Alice")
+print_friends_of("김민석")
