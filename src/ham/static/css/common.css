@@ -1,0 +1,40 @@
+
+.btn-home {
+	display:none;
+}
+
+.navbar-toggle {
+	border:none;
+	float:left;
+}
+
+.navbar {
+	margin-bottom: 0
+}
+
+@media (max-width: 767px) {
+	.btn-home {
+	    float: initial;
+	    display: inline-block;
+	    height: 50px;
+	    padding: 15px 15px;
+	    font-size: 18px;
+	    line-height: 20px;
+	    color:#777;
+	}
+
+	.homewrapper {
+		position: absolute;
+	    width: 100%;
+	    left: 0;
+	    text-align: center;
+	    margin:0 auto;
+
+	}
+}
+
+/* theme color */
+.color-main {
+	background-color: pink;
+}
+

@@ -1,15 +1,40 @@
+<!-- Every template in this project should extend this HTML file -->
+
 {% load staticfiles %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery-3.2.1.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{% block title %}{% endblock %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% block head %}{% endblock %}
 </head>
 <body>
+<nav class="navbar navbar-default" role="navigration">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle" >
+	        <span class="icon-bar"></span>	
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>                        
+    	</button>
+    	<div class="homewrapper">
+    		<a href="#" class="btn-home"><span class="glyphicon glyphicon-home"></span></a>	
+    	</div>
+
+
+    </div>
+	<a href="#" class="navbar-brand collapse navbar-collapse">HAM</a>
+	<ul class="nav navbar-nav navbar-right collapse navbar-collapse">
+		<li><a href="#">Login</a></li>
+		<li><a href="#">Singup</a></li>
+	</ul>
+</nav>
+<div>
 {% block content %}
 {% endblock %}
+</div>
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-3.2.1.js' %}"></script>
 </body>
-</html>
+</html>	
