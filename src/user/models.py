@@ -5,3 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
 	phone = models.CharField(max_length=13, unique=True)
+	img = models.CharField(max_length=255, null=True, blank=True)
+	is_owner = models.BooleanField(default=0)
+
+	
