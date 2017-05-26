@@ -1,19 +1,18 @@
+1.**각 어플리케이션 내부 static/tempates 필요시 아래 경로로 생성**
 
-### 각 어플리케이션 내부 static/tempates 필요시 아래 경로로 생성
+>**static** : (appname)/static/(appname)/(css, js, images)/
 
-**static** : (appname)/static/(appname)/(css, js, images)/
-
-**templates** : (appname)/templates/(appname)/~.html
-
-
-app 내에서 공통적으로 사용되는 템플릿 : (appname)/templates/(appname)/base.html 으로 생성
-
->{% extends 'base.html' %} 로 프로젝트 폴더(ham) 내 base.html을 확장할 것
-
->app 공통 템플릿 내부 컨텐츠 블록 :  {% block (appname) %}
+>**templates** : (appname)/templates/(appname)/~.html
 
 
-필요한 스크립트는 block의 가장 밑에 script 태그 작성
+2.**app 내에서 공통적으로 사용되는 템플릿 : (appname)/templates/(appname)/base.html 으로 생성**
+
+>프로젝트 폴더(ham) 내 base.html을 확장할 것
+
+>app 공통 템플릿 내부 컨텐츠 블록 : {% block (appname) %}
+
+
+3.**필요한 스크립트는 block의 가장 밑에 script 태그 작성**
 
 
 ***
