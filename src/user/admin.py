@@ -1,3 +1,20 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from home.forms import UserCreationForm
+from .models import User
 
-# Register your models here.
+class UserAdmin(UserAdmin):
+	add_form = UserCreationForm
+	
+
+	# add_fieldsets = (
+	# 	(None, {
+	# 		'fields': ('username', 'password1', 'password2', 'phone')
+	# 	}),
+	# )
+
+# UserAdmin.list_display += ('phone',)
+# UserAdmin.list_filter += ('phone',)
+UserAdmin.fieldsets[1][1]['fields'] += ('phone',)
+
+admin.site.register(User, UserAdmin)

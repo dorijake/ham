@@ -140,3 +140,5 @@ STATICFILES_DIRS = (
 # Cutomized User Model
 AUTH_USER_MODEL='user.User'
 
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "/"
