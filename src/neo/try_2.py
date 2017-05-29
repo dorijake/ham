@@ -197,8 +197,7 @@ def select_node_p2p(session, p_key):
   return sorted_list
 
 def select_node_p2s_got(session, p_key):
-  # MATCH (n:Person)-[:On_rlt_p2p]->(m) WHERE n.p_key = "1" RETURN n, m
-  # create_query = "MATCH (n:Person)-[:On_rlt_p2p]->(m) WHERE n.p_key = {p_key} RETURN n.name AS a_name, m.name AS b_name"
+  
   create_query = "MATCH (n:Person)-[r:On_rlt_p2s]->(m) WHERE n.p_key = {p_key} RETURN m, r.got_in_num" 
   result = session.run(create_query, {"p_key":str(p_key)})
   got_list = []
@@ -228,6 +227,44 @@ def select_node_psp_1(session, p_p_key):
   # [ [ storename dic (가게 이름) + people dic (간 친구들 목록) ] , [  다른 가게에 대해 ]]
   return got_list
 
+
+#p_p_key 의 친구들이 자주 가는 가게들
+#그리고 가게별 이용하는 친구들
+def select_node_f2p(session, p_p_key):
+  storedic = {}
+
+  for friend in select_node_p2p(session, p_p_key):
+
+    for store in select_node_p2s_got(session, friend["p_key"]):
+      store_by_friend = {"name" : friend["name"], "p_key" : friend["p_key"], "r.got_in_num" : store["r.got_in_num"]}
+
+      if store["name"] not in storedic : 
+        storedic[store["name"]] = []
+        storedic[store["name"]].append(store_by_friend)
+      if store["name"] in storedic :
+        storedic[store["name"]].append(store_by_friend)
+
+  for storename in storedic.keys():
+    storedic[storename] = sorted(storedic[storename], key = lambda k:k["r.got_in_num"], reverse = True)  
+  
+  storescore = {}
+  storescorelist = []
+  
+  for store in storedic.keys():
+    score = 0
+    for storedata in storedic[store] :
+      score += int(storedata["r.got_in_num"])
+    storescore[store] = score
+
+    storescorerank = sorted(storescore, key=storescore.__getitem__, reverse = True)
+
+  got_list = [storescorerank, storedic]
+  
+  #got_list[0] : 인기 많은 store sorted list
+  #got_list[1] : 딕셔너리. keys = 가게이름, values = 가게 이용한 친구들에 대한 딕셔너리 (p_key, name, r.got_in_num 3가지. sorted by got_in_num)
+  
+  return got_list
+
 # 현재 s2p 관계를 정의하지 않았기 때문에 p2s 에 대한 관계를 이용해서 꾸림
 def select_node_s2p(session, p_key, p_p_key):
 
@@ -242,12 +279,12 @@ def select_node_s2p(session, p_key, p_p_key):
     temp_dic = dict(zip(record.values()[0].keys(), record.values()[0].values()))
     # r.got_in_num : str
     temp_dic["r.got_in_num"] = int(record.values()[1])
-    got_list.append(temp_dic)    
+    got_list.append(temp_dic) 
 
   # [한 사람의 정보 + 가게 간 횟수 (got_in_num), ]
   return got_list
 
-
+# 본인를 제외하고, 자신과 관계 있는 사람들만 가져옴
 def select_node_s2p_net(session, p_key, p_p_key):
 
   create_query = "MATCH (n:Store)-[r:On_rlt_p2s]-(m:Person) WHERE n.p_key = {p_key} RETURN m, r.got_in_num" 
@@ -340,9 +377,9 @@ session = startSession()
 # createRlt_p2i(session, "5", "00000010", "3")
 # createRlt_p2i(session, "6", "00000010", "3")
 
-
+print(select_node_f2p(session,"1"))
 # print(select_node_s2p_net(session, "00000007", "1"))
-print(select_node_psp_1(session, "1"))
+# print(select_node_psp_1(session, "1"))
 # print(select_node_s2p(session, "00000009", "4"))
 # print(select_node_p2p(session, "1"))
 # encode2json_d3_first(select_node_p2s_got(session, "5"))
