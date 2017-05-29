@@ -178,43 +178,23 @@ def createRlt_p2i(session, p_p_key, i_p_key, get_num):
 #   return 
 
 
-def select_p_of_p(session, p_key):
+def select_node_p2p(session, p_key):
   # MATCH (n:Person)-[:On_rlt_p2p]->(m) WHERE n.p_key = "1" RETURN n, m
-  # create_query = "MATCH (n:Person)-[:On_rlt_p2p]->(m) WHERE n.p_key = {p_key} RETURN n.name AS a_name, m.name AS b_name"
-  create_query = "MATCH (n:Person)-[:On_rlt_p2p]->(m) WHERE n.p_key = {p_key} RETURN n, m"
+  create_query = "MATCH (n:Person)-[r:On_rlt_p2p]->(m) WHERE n.p_key = {p_key} RETURN m, r.with_num"
   result = session.run(create_query, {"p_key":str(p_key)})
-  r_dic = []
-  p_dic = {}
-  v_dic = {}
+  got_list = []
+
   for record in result:
-    for k, v in record.items():
-      
-      if str(k) == "m" :
-        for k_1, v_1 in v.items():
-          v_dic[str(k_1)] = str(v_1)
+    # m temp_dic
+    temp_dic = dict(zip(record.values()[0].keys(), record.values()[0].values()))
+    # r.got_in_num : str
+    temp_dic["r.with_num"] = int(record.values()[1])
+    got_list.append(temp_dic)
 
-        # print(v_dic)
-        r_dic.append(v_dic)
-        print(r_dic)
-      #   r_dic.append(p_dic)
-      #   p_dic.clear()
-      # print(k)
+   # list sorting by value at dicionaries in list
+  sorted_list = sorted(got_list, key = lambda k:k["r.with_num"], reverse = True)
 
-  # print(len(r_dic))
-  # print(r_dic)
-    # print(list(record['m'].keys()))
-    # print(list(record['m'].values()))
-      # print("%s %s" % (record["a_name"], record["b_name"]))
-      # print("%s %s" % (record["name"], record["incentiveStrg_no"]))
-
-# def print_friends_of(session, p_key):
-#         with session.begin_transaction() as tx:
-#             for record in tx.run("MATCH (a:Person)-[:On_rlt_p2p]->(f) "
-#                                  "WHERE a.p_key = {p_key} "
-#                                  "RETURN f.name", p_key=p_key):
-#                 print(record["f.name"])
-
-
+  return sorted_list
 
 def select_node_p2s_got(session, p_key):
   # MATCH (n:Person)-[:On_rlt_p2p]->(m) WHERE n.p_key = "1" RETURN n, m
@@ -234,6 +214,59 @@ def select_node_p2s_got(session, p_key):
   sorted_list = sorted(got_list, key = lambda k:k["r.got_in_num"], reverse = True)
 
   return sorted_list
+
+def select_node_psp_1(session, p_p_key):
+  got_list = []
+
+  for store in select_node_p2s_got(session, p_p_key):
+    temp = {}
+    temp["people"] = select_node_s2p_net(session, store["p_key"], p_p_key)
+    temp["storename"] = store["name"]
+    
+    got_list.append(temp)
+    
+  # [ [ storename dic (가게 이름) + people dic (간 친구들 목록) ] , [  다른 가게에 대해 ]]
+  return got_list
+
+# 현재 s2p 관계를 정의하지 않았기 때문에 p2s 에 대한 관계를 이용해서 꾸림
+def select_node_s2p(session, p_key, p_p_key):
+
+  create_query = "MATCH (n:Store)-[r:On_rlt_p2s]-(m:Person) WHERE n.p_key = {p_key} RETURN m, r.got_in_num" 
+  result = session.run(create_query, {"p_key":str(p_key)})
+  got_list = []
+
+  for record in result:
+
+    # 본인을 제외함 p_p_key 걸러내기
+    if record.values()[0].get("p_key") == p_p_key : continue
+    temp_dic = dict(zip(record.values()[0].keys(), record.values()[0].values()))
+    # r.got_in_num : str
+    temp_dic["r.got_in_num"] = int(record.values()[1])
+    got_list.append(temp_dic)    
+
+  # [한 사람의 정보 + 가게 간 횟수 (got_in_num), ]
+  return got_list
+
+
+def select_node_s2p_net(session, p_key, p_p_key):
+
+  create_query = "MATCH (n:Store)-[r:On_rlt_p2s]-(m:Person) WHERE n.p_key = {p_key} RETURN m, r.got_in_num" 
+  result = session.run(create_query, {"p_key":str(p_key)})
+  got_list = []
+
+  for record in result:
+    # 본인을 제외함 p_p_key 걸러내기
+    if record.values()[0].get("p_key") == p_p_key : continue
+    # 친구만 남기기
+    for person in select_node_p2p(session, p_p_key):
+      if record.values()[0].get("p_key") == person["p_key"]:
+        temp_dic = dict(zip(record.values()[0].keys(), record.values()[0].values()))
+        temp_dic["r.got_in_num"] = int(record.values()[1])
+        # r.got_in_num : str
+        got_list.append(temp_dic)
+    
+  # [한 사람의 정보 + 가게 간 횟수 (got_in_num), ]
+  return got_list
 
 def encode2json_d3_first(sorted_list):
   name_list_sorted_gotInNum = []
@@ -308,7 +341,11 @@ session = startSession()
 # createRlt_p2i(session, "6", "00000010", "3")
 
 
-encode2json_d3_first(select_node_p2s_got(session, "5"))
+# print(select_node_s2p_net(session, "00000007", "1"))
+print(select_node_psp_1(session, "1"))
+# print(select_node_s2p(session, "00000009", "4"))
+# print(select_node_p2p(session, "1"))
+# encode2json_d3_first(select_node_p2s_got(session, "5"))
 # print_friends_of(session, "2")
 
 session.close()
