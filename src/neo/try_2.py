@@ -236,14 +236,14 @@ def select_node_f2p(session, p_p_key):
   for friend in select_node_p2p(session, p_p_key):
 
     for store in select_node_p2s_got(session, friend["p_key"]):
-      store_by_friend = {"name" : friend["name"], "p_key" : friend["p_key"], "r.got_in_num" : store["r.got_in_num"]}
+      friends_by_store = {"name" : friend["name"], "p_key" : friend["p_key"], "r.got_in_num" : store["r.got_in_num"]}
 
+      if store["name"] in storedic :
+        storedic[store["name"]].append(friends_by_store)
       if store["name"] not in storedic : 
         storedic[store["name"]] = []
-        storedic[store["name"]].append(store_by_friend)
-      if store["name"] in storedic :
-        storedic[store["name"]].append(store_by_friend)
-
+        storedic[store["name"]].append(friends_by_store)
+        
   for storename in storedic.keys():
     storedic[storename] = sorted(storedic[storename], key = lambda k:k["r.got_in_num"], reverse = True)  
   
