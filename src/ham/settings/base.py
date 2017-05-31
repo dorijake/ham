@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'service',
     'shop',
     'user',
-    'neo',	
+    'neo',
+    'ajaxapp'	
 ]
 
 MIDDLEWARE = [
