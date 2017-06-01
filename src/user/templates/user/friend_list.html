@@ -17,17 +17,17 @@
 	<div id='list'>
 		{% for friend in friend_list %}
 		<div class='row'>
-			<div class='col-sm-10'>
-				<span>{{ friend.friend_name }}</span>
+			<div class='col-sm-6'>
+				<span name='friend_name'>{{ friend.friend_name }}</span>
 				<input type="hidden" name='friend_id' value={{friend.friend_id}}>
 			</div>
-			<div class='col-sm-2'></div>
+			<div class='col-sm-2'><a href="#" name='delete'>delete</a></div>
 		</div>
 		{% endfor %}
 	</div>
 
 	<!-- friend search modal -->
-	<div id="myModal" class="modal fade" role="dialog">
+	<div id="myModal" class="modal fade" role="dialog" tabindex="-1">
   		<div class="modal-dialog">
 
 			<div class="modal-content">
@@ -36,7 +36,7 @@
 			        <h4 class="modal-title">Search Friend</h4>
 			        <form id="form-search">
 			        	{% csrf_token %}
-        				<input type="text" name="username">
+        				<input type="text" name="keyword">
         				<input type="submit" value="submit">
         			</form>
 		      	</div>
@@ -56,6 +56,12 @@
 {% block script %}
 <script type="text/javascript">
 	
+	$('#myModal').on('shown.bs.modal', function() {
+
+		$("input[name='keyword']").val('').focus()
+
+	})
+
 
 	$('#form-search').on('submit', function(e) {
 		data = $(this).serialize()
@@ -101,25 +107,58 @@
 	$(document).on('click', "button[name='add']", function() {
 		user1_id = {{request.user.id}}
 		user2_id = $(this).parent().find('input:hidden').val()
+		user2_name = $(this).parent().find('span.username').text()
 		action_user = user1_id
 		
+		msg = "add " + user2_name + "?"
+		if (!confirm(msg))
+			return false
+
 		data = {
 			'user1_id':user1_id,
 			'user2_id':user2_id,
 			'action_user':action_user,
 		}
 
-		/*$.ajax({
+		$.ajax({
 			type:'POST',
 			url:'add/',
 			data:data,
-			success:function(data) {
-				status = data.status
-				if (status == 1):
+			beforeSend:function(xhr) {
+				xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'))
+			},
+			success:function() {
+				alert("Friend added : " + user2_name)
+			}
+		})
+	})
 
+
+	$("a[name='delete']").on('click', function() {
+		
+		friend_id = $(this).parent().parent().find("input[name='friend_id']").val()
+		friend_name = $(this).parent().parent().find("[name='friend_name']").text()
+
+		if (!confirm('remove?'))
+			return false;
+
+		$.ajax({
+			type:"POST",
+			url:'delete/',
+			data:{'friend_id':friend_id,},
+			dataType:'json',
+			beforeSend:function(xhr) {
+				xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'))
+			},
+			success:function(data) {
+				if (data.result == 'success') {
+					alert("user '" + friend_name + "' has just been delete from your friend list")
+				} else if (data.result == 'failed') {
+					alert("error")
+				}
 			}
 
-		})*/
+		})
 	})
 
 </script>
