@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style type="text/css">
+	#mypage {
+		display:inline-block;
+		width:100%;
+		
+	}
+
+	#info-wrapper {
+		margin-bottom:20px;
+	}
+
+	#mypage-header {
+		background-color: pink;
+		text-align: center;
+	}
+
+	#mypage-label {
+		height:100px;
+		border:1px solid black;
+	}
+
+	#mypage-nav {
+		height:50px;
+	}
+
+	.label {
+		line-height: 50px;
+		font-weight: bold;
+		font-size:20px;
+	}
+
+	#menu-wrapper {
+		height:61px;
+		overflow: hidden;
+	}
+
+	#scrollmenu {
+		height:76px;
+	    overflow-x: scroll;
+	    white-space: nowrap;
+	    overflow-y:hidden;
+	    -webkit-overflow-scrolling: touch;
+	}
+
+	#scrollmenu a {
+	    display: inline-block;
+	    width:100%;
+	    color: white;
+	    text-decoration: none;
+	    font-size:18px;
+
+	}
+
+	#scrollmenu a:hover {
+	    font-weight: bold;
+	    border-bottom:5px solid white;
+	}
+
+	.current-menu {
+		font-weight: bold;
+		border-bottom:5px solid white;
+	}
+
+	#scrollmenu .menu {
+		display:inline-block;
+		width:120px;
+		text-align: center;
+		margin-left:5px;
+		margin-right:5px;
+		line-height:56px;
+	}
+
+	#mypage_content {
+		margin-top:50px;
+	}
+
+	label {
+		width:150px;
+	}
+
+	/* START CSS for profile.html */
+	#profile_content {
+		text-align: center;
+		
+	}
+
+
+	/* END CSS for profile.html*/
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="mypage-container">	
+	<div id="mypage-header">
+		<div class="container">
+			<div id="info-wrapper">
+				<div class="label">MYPAGE</div>
+				<div class="info">SOME USER INFORMATIONS(PICTURE, GRADE, ... )</div>
+			</div>
+			<div id="menu-wrapper">
+				<div id="scrollmenu">
+					<span class="menu" id="profile"><a href="{% url 'profile' %}">PROFILE</a></span>
+					<span class="menu"><a href="#history">HISTORY</a></span>
+					<span class="menu"><a href="#">PASSWORD</a></span>
+					<span class="menu"><a href="#">fffff</a></span>
+					<span class="menu"><a href="#">fffff</a></span>
+					<span class="menu"><a href="#">fffff</a></span>
+					<span class="menu"><a href="#">fffff</a></span>
+					<span class="menu"><a href="#">fffff</a></span>
+				</div>	
+			</div>
+			
+		</div>
+	</div>
+
+	<div id="mypage_content" class="container content-wrapper">
+		{% block mypage %}{% endblock %}
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		var location = document.location.href.split('/');
+
+		var currentMenu = '';
+		for (i in location) {
+			
+			if (location[i] == 'mypage') {
+				index = parseInt(i);
+				currentMenu = location[index+1];
+				break;
+			}
+		}
+		
+		if (currentMenu == 'profile') {
+			$('#profile').addClass('current-menu');
+		} 
+	})
+
+
+	/* -- START Javascript for 'profile.html' -- */
+
+	$("button[name='btn_edit']").on('click', function() {
+		var next = "{% url 'edit_profile' %}";
+		var query = "?next=" + next;
+		window.location = "{% url 'password_confirm' %}" + query;
+	})
+
+	/* -- END Javascript for 'profile.html' -- */
+
+
+	/* -- START 'password_confirm.html' Script -- */
+
+	$('#password_form').on('submit', function(e) {
+
+		data = $(this).serialize();
+
+		$.ajax({
+			type:"POST",
+			url:"{% url 'password_confirm' %}",
+			data:data,
+			dataType:'json',
+			success:function(data) {
+				if (data.result == 'success') {
+					alert(data.next);
+					window.location = data.next;
+				} else if (data.result == 'failed') {
+					$("#password_form").find("#msgbox").text(data.msg);
+				}
+
+			}
+		})
+		e.preventDefault();
+	})
+
+	/* -- END 'password_confirm.html' Script -- */
+</script>
+{% endblock %}

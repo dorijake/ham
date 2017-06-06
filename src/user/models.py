@@ -14,7 +14,6 @@ class UserManager(UserManager):
 				user_info.annotate(friend_id=F('user2_set__user1'), friend_name=F('user2_set__user1__username')).exclude(
 				friend_id__isnull=True, friend_name__isnull=True).values('friend_id', 'friend_name'))
 
-		
 		return friend_list
 
 class User(AbstractUser):

@@ -1,12 +1,17 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import User, Friends, Friends_Status
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Q
 import json
-from .forms import FriendsForm
+from .forms import FriendsForm, UserProfileForm
 from django.forms.models import model_to_dict
+from django.contrib.auth.forms import AuthenticationForm
+from home.forms import UserCreationForm
+from django.urls import reverse
+
+
 # Create your views here.
 
 @login_required
@@ -103,4 +108,75 @@ def delete_friend(request):
 	return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-	
+@login_required
+def mypage(request):
+	redirect_to = reverse('profile')
+
+	return HttpResponseRedirect(redirect_to)
+
+
+@login_required
+def password_confirm(request):
+
+	if request.method == "POST":
+		
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+
+		data = {'username':username, 'password':password}
+
+		form = AuthenticationForm(data=data)
+		
+		response = {}
+
+		if form.is_valid():
+
+			redirect_to = request.POST.get('next')
+
+			response['result'] = 'success'
+			response['next'] = redirect_to
+
+
+		else:
+			response['result'] = 'failed'
+			response['msg'] = 'invalid password'
+
+
+		return HttpResponse(json.dumps(response), content_type='application/json')
+
+
+	next = request.GET.get('next')
+
+	return render(request, 'user/password_confirm.html', {'next':next})
+
+
+@login_required
+def profile(request):
+	userid = request.user.id
+
+	user = User.objects.get(id=userid)
+
+	return render(request, 'user/profile.html', {'user':user})
+
+
+@login_required
+def edit_profile(request):
+
+	if request.method == "POST":
+		userid = request.user.id
+		user = User.objects.get(pk=userid)
+
+		form = UserProfileForm(request.POST, instance=user)
+
+		if form.is_valid():
+
+			form.save()
+
+			return HttpResponseRedirect(reverse('profile'))
+
+	else:
+
+		form = UserProfileForm()
+
+	return render(request, 'user/edit_profile.html', { 'form':form })
+
