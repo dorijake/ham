@@ -26,7 +26,7 @@ var cordi =[
 
 //sin36=0.5878,cos36=0.809
 var dataset = [
-   { "x_axis": 0, "y_axis": 0,"index":0,"img" :"/home/lamph/data/inmul.png","tag":"url(#0)","r":r0,
+   { "x_axis": 0, "y_axis": 0,"index":0,"img" :"sajin/prof.jpg","tag":"url(#0)","r":r0,
     "fr":[
         {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": -3*rf,"index":0,"tag":"url(#0)","r":0},
         {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 0,"index":1,"tag":"url(#1)","r":0},
@@ -87,7 +87,7 @@ var frtemp = {"friends":[
                 ["해리포터","김정균","정노철"],
                 ["메모리","디버거","검사기"]
                     ]};
-temp["nodes"].unshift("dummy");
+temp["nodes"].unshift("Person");
 frtemp ["friends"].unshift("dummy");
 
 // console.dir(temp["nodes"]);
@@ -100,7 +100,7 @@ for (var i=0;i<dataset.length;i++)
 {
     dataset[i]["name"]=temp["nodes"][i];
 }
-console.dir(dataset);
+// console.dir(dataset);
 
 var svg = d3.select("body")
             .append("svg")
@@ -148,16 +148,21 @@ var ggg=gg.selectAll("g")
                     for(var j=0;j<3;j++){
                     dataset[i].fr[j]["name"]=null;
                     dataset[i].fr[j]["r"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
                     }
-                    
                 }
                     d.x_axis=(cordi[d.index].x_axis)/a*abig;
                     d.y_axis=(cordi[d.index].y_axis)/a*abig;
-                    d.r=r1;
+                    d.r=r1
                     for(var i=0;i<3;i++){
                     d.fr[i]["name"]=frtemp["friends"][d.index][i];
-                    d.fr[i]["r"]=rf;}
+                    d.fr[i]["r"]=rf;
+                    d.fr[i]["x_axis"]=-a*0.5878*2*0.809-r+rf;}
                     
+                    d.fr[0]["y_axis"]=-3*rf;
+                    d.fr[1]["y_axis"]=0;
+                    d.fr[2]["y_axis"]=3*rf;
                     d.fr.r=rf;
             }
             else if(d.index ==2 ){
@@ -170,15 +175,21 @@ var ggg=gg.selectAll("g")
                     for(var j=0;j<3;j++){
                     dataset[i].fr[j]["name"]=null;
                     dataset[i].fr[j]["r"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
                     }
                 }
                     d.x_axis=(cordi[d.index].x_axis)/a*abig;
                     d.y_axis=(cordi[d.index].y_axis)/a*abig;
-                    d.r=r1;
+                    d.r=r1
                     for(var i=0;i<3;i++){
                     d.fr[i]["name"]=frtemp["friends"][d.index][i];
-                    d.fr[i]["r"]=rf;}
+                    d.fr[i]["r"]=rf;
+                    d.fr[i]["x_axis"]=-a*0.5878*2*0.809-r+rf;}
                     
+                    d.fr[0]["y_axis"]=-3*rf;
+                    d.fr[1]["y_axis"]=0;
+                    d.fr[2]["y_axis"]=3*rf;
                     d.fr.r=rf;
             }
             else if(d.index ==3 ){
@@ -191,15 +202,21 @@ var ggg=gg.selectAll("g")
                     for(var j=0;j<3;j++){
                     dataset[i].fr[j]["name"]=null;
                     dataset[i].fr[j]["r"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
                     }
                 }
                     d.x_axis=(cordi[d.index].x_axis)/a*abig;
                     d.y_axis=(cordi[d.index].y_axis)/a*abig;
-                    d.r=r1;
+                    d.r=r1
                     for(var i=0;i<3;i++){
                     d.fr[i]["name"]=frtemp["friends"][d.index][i];
-                    d.fr[i]["r"]=rf;}
+                    d.fr[i]["r"]=rf;
+                    d.fr[i]["x_axis"]=-a*0.5878*2*0.809-r+rf;}
                     
+                    d.fr[0]["y_axis"]=-3*rf;
+                    d.fr[1]["y_axis"]=0;
+                    d.fr[2]["y_axis"]=3*rf;
                     d.fr.r=rf;
             }
             else if(d.index ==4 ){
@@ -212,15 +229,21 @@ var ggg=gg.selectAll("g")
                     for(var j=0;j<3;j++){
                     dataset[i].fr[j]["name"]=null;
                     dataset[i].fr[j]["r"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
                     }
                 }
                     d.x_axis=(cordi[d.index].x_axis)/a*abig;
                     d.y_axis=(cordi[d.index].y_axis)/a*abig;
-                    d.r=r1;
+                    d.r=r1
                     for(var i=0;i<3;i++){
                     d.fr[i]["name"]=frtemp["friends"][d.index][i];
-                    d.fr[i]["r"]=rf;}
+                    d.fr[i]["r"]=rf;
+                    d.fr[i]["x_axis"]=-a*0.5878*2*0.809-r+rf;}
                     
+                    d.fr[0]["y_axis"]=-3*rf;
+                    d.fr[1]["y_axis"]=0;
+                    d.fr[2]["y_axis"]=3*rf;
                     d.fr.r=rf;
             }
             else if(d.index ==5 ){
@@ -233,6 +256,8 @@ var ggg=gg.selectAll("g")
                     for(var j=0;j<3;j++){
                     dataset[i].fr[j]["name"]=null;
                     dataset[i].fr[j]["r"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
                     }
                 }
                     d.x_axis=(cordi[d.index].x_axis)/a*abig;
@@ -240,8 +265,12 @@ var ggg=gg.selectAll("g")
                     d.r=r1
                     for(var i=0;i<3;i++){
                     d.fr[i]["name"]=frtemp["friends"][d.index][i];
-                    d.fr[i]["r"]=rf;}
+                    d.fr[i]["r"]=rf;
+                    d.fr[i]["x_axis"]=-a*0.5878*2*0.809-r+rf;}
                     
+                    d.fr[0]["y_axis"]=-3*rf;
+                    d.fr[1]["y_axis"]=0;
+                    d.fr[2]["y_axis"]=3*rf;
                     d.fr.r=rf;
             }
             //여기까지 각 노드별 클릭 셋팅
@@ -272,6 +301,7 @@ var ggg=gg.selectAll("g")
             .attr("y",function(d){return -d.r-5;});
 
             ggg.transition()
+            .delay(150)
             .attr("transform",function(d){
                 return  "translate("+d.x_axis+","+d.y_axis+")";});
    
@@ -286,7 +316,7 @@ var ggg=gg.selectAll("g")
             gggtext
             .text(function(d){return d.name;});
 
-            console.dir(dataset);
+            // console.dir(dataset);
         });
         
             
