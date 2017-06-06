@@ -1,0 +1,17 @@
+{% extends 'user/mypage_base.html' %}
+
+{% block mypage %}
+<div>
+	<form method="POST"> {% csrf_token %}
+		<div>
+			<label>Location1</label> 
+			{{ form.location1 }}
+		</div>
+		<div>
+			<label>Location2</label> 
+			{{ form.location2 }}
+		</div>
+		<input type="submit" name="" value="submit">
+	</form>
+</div>
+{% endblock %}

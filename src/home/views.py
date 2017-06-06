@@ -1,5 +1,9 @@
 from django.shortcuts import render
 from .forms import UserCreationForm, AuthenticationForm
+from user.forms import UserProfileForm
+from django.http import HttpResponseRedirect, Http404
+from django.urls import reverse
+from user.models import User
 
 # Create your views here.
 
@@ -14,14 +18,47 @@ def signup(request):
 
 	if request.method == "POST":
 		signup_form = UserCreationForm(request.POST)
-		if signup_form.is_valid:
-			user = signup_form.save(commit=False)
-			user.save()
+		if signup_form.is_valid():
 
-			return render(request, 'home/signup_done.html', {'user':user})
+			# Put off saving user data into database until the user feed extra information on the next page.
 
-	elif request.method == "GET":
-		form = UserCreationForm()
+			user = signup_form.save()
+
+			redirect_to = reverse('extra_info', kwargs={'userid':user.id})
+
+			return HttpResponseRedirect(redirect_to)
+		else:
+
+			return render(request, 'home/signup.html', {'form':signup_form})
 	
-	return render(request, 'home/signup.html', {'form':form})
+	signup_form = UserCreationForm()
+	
+	return render(request, 'home/signup.html', { 'form':signup_form })
+
+
+def extra_info(request, userid):
+
+	if request.method == "POST":
+		try:
+			user = User.objects.get(pk=userid)
+			form = UserProfileForm(request.POST or None, instance=user)
+
+		except User.DoesNotExist:
+			raise Http404("User does not exist.")
+
+		if form.is_valid():
+
+			form.save()
+
+			return HttpResponseRedirect(reverse('signup_done'))
+				
+	form = UserProfileForm()
+
+	return render(request, 'home/extra_info.html', {'form':form})
+
+
+
+def signup_done(request):
+
+	return render(request, 'home/signup_done.html', {})
 

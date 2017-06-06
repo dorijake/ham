@@ -9,11 +9,12 @@ class UserManager(UserManager):
 	def get_friends(self, id):
 		user_info = self.filter(id=id).prefetch_related('user1_set', 'user2_set')
 
-		friend_list = user_info.annotate(friend_id=F('user1_set__user2'), friend_name=F('user1_set__user2__username')).values(
-				'friend_id', 'friend_name').union(user_info.values('user2_set__user1', 'user2_set__user1__username'))
+		friend_list = user_info.annotate(friend_id=F('user1_set__user2'), friend_name=F('user1_set__user2__username')).exclude(
+				friend_id__isnull=True, friend_name__isnull=True).values('friend_id', 'friend_name').union(
+				user_info.annotate(friend_id=F('user2_set__user1'), friend_name=F('user2_set__user1__username')).exclude(
+				friend_id__isnull=True, friend_name__isnull=True).values('friend_id', 'friend_name'))
 
 		return friend_list
-
 
 class User(AbstractUser):
 
@@ -30,7 +31,6 @@ class User(AbstractUser):
 	location2 = models.CharField(max_length=20, null=True, blank=True)
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default="M")
 	
-	
 	objects = UserManager()	
 
 
@@ -40,11 +40,15 @@ class Friends_Status(models.Model):
 	name = models.CharField(max_length=200, unique=True)
 
 
+
 class Friends(models.Model):
 	user1 = models.ForeignKey(User, related_name='user1_set')
 	user2 = models.ForeignKey(User, related_name='user2_set')
 	action_user = models.ForeignKey(User, related_name='action_user')
 	status = models.ForeignKey(Friends_Status, to_field='code')
-
+	
 	class Meta:
 		unique_together = ('user1', 'user2',)
+
+
+

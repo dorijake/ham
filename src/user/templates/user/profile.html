@@ -1,0 +1,23 @@
+{% extends 'user/mypage_base.html' %}
+{% load static %}
+
+{% block mypage %}
+<div id="profile_content">
+	<table class="table">
+		<tr>
+			<th>Phone</th>
+			<td>{{ user.phone }}</td>
+		</tr>
+		<tr>
+			<th>Location1</th>
+			<td> {{ user.location1 }}</td>
+		</tr>
+		<tr>
+			<th>Location2</th>
+			<td>{{ user.location2 }}</td>
+		</tr>
+	</table>
+	<button name='btn_edit' class="btn btn-defualt">EDIT</button>
+</div>
+{% endblock %}
+
