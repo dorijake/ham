@@ -1,19 +1,21 @@
 {% load staticfiles %}
 
 <!DOCTYPE html>
-<meta charset="utf-8">
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no" charset="utf-8">
+</head>
 <style>
 
 
 </style>
 <body>
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<!-- <script src="{% static 'js/graph.js' %}"></script> -->2
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<!-- <script src="{% static 'js/graph.js' %}"></script> -->
 <script>
-var w = 750;
-var h = 1000
+var w = window.innerWidth;
+var h = w/3*4;
 var a = w/3;
-var abig =w/2.2 //확대 반지름
+var abig =w /2.2; //확대 반지름
 var x=w/2;
 var y=h*9/16;
 var r1 = w/4.9;
@@ -363,7 +365,7 @@ var text=   gg.append("text")
     .attr("x",0)
     .attr("y",function(d){return -d.r-5;})
     .attr("font-family","sans-serif")
-    .attr("font-size","1.4em")
+    .attr("font-size","1em")
     .attr("fill","black")
     .attr("text-anchor","middle");
 
