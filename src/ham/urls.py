@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^social/', include('social.urls'), name='social'),
     url(r'^user/', include('user.urls'), name='user'),
     url(r'^ajaxapp/', include('ajaxapp.urls'), name='ajaxapp'),
+    url(r'^graph/', include('graph.urls'), name='graph'),
 ]

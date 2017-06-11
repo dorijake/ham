@@ -17,7 +17,7 @@ def validate_username(request):
     username = request.GET.get('username', None)
     data = {
     	'is_success': '1',
-    	'username': username
+    	'username': "hey"
         # 'is_taken': User.objects.filter(username__iexact=username).exists()
     }
     print("what")
