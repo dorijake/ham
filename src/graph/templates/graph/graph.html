@@ -1,16 +1,13 @@
 {% load staticfiles %}
 
 <!DOCTYPE html>
-<head>
-<meta name="viewport" content="width=device-width, user-scalable=no" charset="utf-8">
-</head>
+<meta charset="utf-8">
 <style>
 
 </style>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
 <body>
-<<<<<<< HEAD
 
 <div id ="tt"> tt </div>
 <button id="testbtn">test button</button>
@@ -46,13 +43,6 @@ $("#testbtn").click(function () {
     //w=750, h=1000, h=w/3*4
 var w = window.innerWidth-20;
 var h = window.innerHeight-20;
-=======
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<!-- <script src="{% static 'js/graph.js' %}"></script> -->
-<script>
-var w = window.innerWidth;
-var h = w/3*4;
->>>>>>> 28691ba319037868867690be973d6bf4373d4a3b
 var a = w/3;
 var abig =w /2.2; //확대 반지름
 var x=w/2;
@@ -369,22 +359,8 @@ var click=  exg.on("click",function(d){
         });
             
 
-<<<<<<< HEAD
 $(".ggg").click(function () {
   var username = $(this)[0].textContent;
-=======
-var text=   gg.append("text")
-        .text(function(d){return d.name;})
-    .attr("x",0)
-    .attr("y",function(d){return -d.r-5;})
-    .attr("font-family","sans-serif")
-    .attr("font-size","1em")
-    .attr("fill","black")
-    .attr("text-anchor","middle");
-
-
-// 여기 부터ggg 설정
->>>>>>> 28691ba319037868867690be973d6bf4373d4a3b
 
   $.ajax({
     url: '/graph/aa/',
@@ -405,8 +381,4 @@ var text=   gg.append("text")
 </script>
 
 
-<<<<<<< HEAD
 <!-- <script src="{% static 'js/app.js' %}"></script> -->
-=======
-</script>
->>>>>>> 28691ba319037868867690be973d6bf4373d4a3b
