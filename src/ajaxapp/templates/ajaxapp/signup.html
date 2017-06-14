@@ -16,7 +16,7 @@
         dataType: 'json',
         success: function (data) {
           if (data.is_success) {
-            alert(data.username);
+            document.getElementById("tt").innerHTML = data.username;
           }
         }
       });
@@ -30,5 +30,6 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Sign up</button>
+    <div id="tt">tt</div>
   </form>
 {% endblock %}

@@ -4,16 +4,47 @@
 <meta charset="utf-8">
 <style>
 
-
 </style>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
 <body>
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<!-- <script src="{% static 'js/graph.js' %}"></script> -->2
+
+<div id ="tt"> tt </div>
+<button id="testbtn">test button</button>
+
 <script>
-var w = 750;
-var h = 1000
+$("#testbtn").click(function () {
+  var username = $(this).val();
+  console.log(username);
+  // alert("aa");
+
+  $.ajax({
+    url: '/graph/aa/',
+
+    data: {
+      'username': username
+    },
+    dataType: 'json',
+    success: function (data) {
+       document.getElementById("tt").innerHTML = data;
+       console.dir(data);
+    }
+  });
+
+});
+
+
+
+</script>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<!-- <script src="{% static 'js/graph.js' %}"></script> -->
+<script>
+    //w=750, h=1000, h=w/3*4
+var w = window.innerWidth-20;
+var h = window.innerHeight-20;
 var a = w/3;
-var abig =w/2.2 //확대 반지름
+var abig =w /2.2; //확대 반지름
 var x=w/2;
 var y=h*9/16;
 var r1 = w/4.9;
@@ -38,52 +69,52 @@ var cordi =[
 
 //sin36=0.5878,cos36=0.809
 var dataset = [
-   { "x_axis": 0, "y_axis": 0,"index":0,"img" :"{% static 'img/sajin/prof.jpg' %}","tag":"url(#0)","r":r0,
+   { "x_axis": 0, "y_axis": 0,"index":0,"img" :"{% static 'img/sajin/prof.jpg' %}","tag":"url(#0)","r":r0,"i":0,
     "fr":[
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": -3*rf,"index":0,"tag":"url(#0)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 0,"index":1,"tag":"url(#1)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 3*rf,"index":2,"tag":"url(#2)","r":0}
+        {"index":0,"tag":"url(#0)","r":0},
+        {"index":1,"tag":"url(#1)","r":0},
+        {"index":2,"tag":"url(#2)","r":0}
     ]
 },
-   { "x_axis": 0, "y_axis": -a1,"index":1,"img" :"{% static 'img/sajin/wafle.jpg' %}","tag":"url(#1)","r":r,
+   { "x_axis": 0, "y_axis": -a1,"index":1,"img" :"{% static 'img/sajin/wafle.jpg' %}","tag":"url(#1)","r":r,"i":0,
    "fr":[
-       {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": -3*rf,"index":0,"tag":"url(#0)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 0,"index":1,"tag":"url(#1)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 3*rf,"index":2,"tag":"url(#2)","r":0}
+       {"index":0,"tag":"url(#0)","r":0},
+        {"index":1,"tag":"url(#1)","r":0},
+        {"index":2,"tag":"url(#2)","r":0}
    ]
 },
-   { "x_axis": +a2*0.5878*2*0.809, "y_axis": -a2+a2*0.5878*2*0.5878,"index":2,"img" :"{% static 'img/sajin/streetcafe.jpg'%}","tag":"url(#2)","r":r,
+   { "x_axis": +a2*0.5878*2*0.809, "y_axis": -a2+a2*0.5878*2*0.5878,"index":2,"img" :"{% static 'img/sajin/streetcafe.jpg'%}","tag":"url(#2)","r":r,"i":0,
    "fr":[
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": -3*rf,"index":0,"tag":"url(#0)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 0,"index":1,"tag":"url(#1)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 3*rf,"index":2,"tag":"url(#2)","r":0}
+        {"index":0,"tag":"url(#0)","r":0},
+        {"index":1,"tag":"url(#1)","r":0},
+        {"index":2,"tag":"url(#2)","r":0}
    ]
 },
-   { "x_axis": +a3*0.5878, "y_axis": +a3*0.809,"index":3,"img" :"{% static 'img/sajin/masilzari.jpg' %}","tag":"url(#3)","r":r,
+   { "x_axis": +a3*0.5878, "y_axis": +a3*0.809,"index":3,"img" :"{% static 'img/sajin/masilzari.jpg' %}","tag":"url(#3)","r":r,"i":0,
    "fr":[
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": -3*rf,"index":0,"tag":"url(#0)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 0,"index":1,"tag":"url(#1)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 3*rf,"index":2,"tag":"url(#2)","r":0}
+        {"index":0,"tag":"url(#0)","r":0},
+        {"index":1,"tag":"url(#1)","r":0},
+        {"index":2,"tag":"url(#2)","r":0}
    ]
 },
-   { "x_axis": -a4*0.5878, "y_axis": +a4*0.809,"index":4,"img" :"{% static 'img/sajin/fryfan.jpg' %}","tag":"url(#4)","r":r,
+   { "x_axis": -a4*0.5878, "y_axis": +a4*0.809,"index":4,"img" :"{% static 'img/sajin/fryfan.jpg' %}","tag":"url(#4)","r":r,"i":0,
    "fr":[
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": -3*rf,"index":0,"tag":"url(#0)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 0,"index":1,"tag":"url(#1)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 3*rf,"index":2,"tag":"url(#2)","r":0}
+        {"index":0,"tag":"url(#0)","r":0},
+        {"index":1,"tag":"url(#1)","r":0},
+        {"index":2,"tag":"url(#2)","r":0}
    ]
 },
-   { "x_axis": -a5*0.5878*2*0.809, "y_axis": -a5+a5*0.5878*2*0.5878,"index":5,"img" :"{% static 'img/sajin/postre.jpg' %}","tag":"url(#5)","r":r,
+   { "x_axis": -a5*0.5878*2*0.809, "y_axis": -a5+a5*0.5878*2*0.5878,"index":5,"img" :"{% static 'img/sajin/postre.jpg' %}","tag":"url(#5)","r":r,"i":0,
    "fr":[
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": -3*rf,"index":0,"tag":"url(#0)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 0,"index":1,"tag":"url(#1)","r":0},
-        {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": 3*rf,"index":2,"tag":"url(#2)","r":0}
+        {"index":0,"tag":"url(#0)","r":0},
+        {"index":1,"tag":"url(#1)","r":0},
+        {"index":2,"tag":"url(#2)","r":0}
    ]
 }
    ];
 
-var jsonstr = "{\"nodes\": [\"Wafle Star\", \"Street Cafe\", \"마실자리\", \"Fryfan-Gogi\", \"Postre\", \"호치킨\", \"밥은\"]}";
-
+var jsonstr = "{\"nodes\": [\"dummy\",\"Wafle Star\", \"Street Cafe\", \"마실자리\", \"Fryfan-Gogi\", \"Postre\", \"호치킨\", \"밥은\"]}";
+var jsonstr1 = "{\"nodes\": [\"갱플랭크\", \"자크\", \"카타리나\", \"카밀\", \"노틸러스\", \"트린다미어\", \"밥은\"]}";
 // "friend":["문재인","김민석","박종균"]
 var friendset = [
     {"x_axis": -a*0.5878*2*0.809-r+rf, "y_axis": -3*rf,"index":0,"tag":"url(#0)"},
@@ -92,6 +123,7 @@ var friendset = [
 ];
 
 var temp = JSON.parse(jsonstr);
+var temp1 = JSON.parse(jsonstr1);
 var frtemp = {"friends":[
                 ["문재인","김민석","박종균"],
                 ["조우영","민연홍","이상혁"],
@@ -99,7 +131,7 @@ var frtemp = {"friends":[
                 ["해리포터","김정균","정노철"],
                 ["메모리","디버거","검사기"]
                     ]};
-temp["nodes"].unshift("Person");
+// temp["nodes"].unshift("Person");
 frtemp ["friends"].unshift("dummy");
 
 // console.dir(temp["nodes"]);
@@ -127,8 +159,6 @@ var g = svg.append("g")
             })
             .attr("id","source")
             .attr("class","group");
-            
-
 
 var gg = g.selectAll("g")
             .data(dataset)
@@ -142,17 +172,68 @@ var ggg=gg.selectAll("g")
             .data(function(d){return d.fr;})
             .enter()
             .append("g")
-            .attr("class",function(d){return d.index;})
+            .attr("class","ggg")
             .attr("transform",function(d){
                 return  "translate(0, 0)"});
 
 
- //여기부터 클릭 설정
+//gg설정(exg설정)
+var exg = gg.append("g");
+var clip = exg.append("clipPath")
+            .attr("id",function(d){return d.index;});
 
-          var click= gg .on("click",function(d){
-            if(d.index == 1){
-                angle =0;
-                for(var i=1;i<6;i++)
+var circle =  clip.append("circle")
+        .attr("r",function(d){return d.r;})
+        .attr("fill","orange")
+        .attr("boder",5)
+        .attr("boder-radius","#98ff98");
+
+
+var image =  exg.append("image")
+        .attr("xlink:href",function(d){return d.img;})
+        .attr("x",function(d){return -d.r;})
+        .attr("y",function(d){return -d.r;})
+         .attr("width",function(d){return d.r*2;})
+        .attr("height",function(d){return d.r*2;})
+        .attr("clip-path",function(d){return d.tag;}); 
+
+var text=   exg.append("text")
+        .text(function(d){return d.name;})
+    .attr("x",0)
+    .attr("y",function(d){return -d.r-5;})
+    .attr("font-family","sans-serif")
+    .attr("font-size","1em")
+    .attr("fill","black")
+    .attr("text-anchor","middle");
+
+
+// 여기 부터ggg 설정
+            
+    var gggclip = ggg.append("clipPath")
+            .attr(function(d){return d.index;})
+            
+    var gggcircle=  ggg.append("circle")
+            .attr("r",function(d){return d.r;})
+            .attr("fill","#98ff98");
+
+    var gggtext = ggg.append("text")
+            // .text(function(d){return d.name;})
+            .attr("x",2*rf)
+        .attr("font-family","sans-serif")
+        .attr("font-size","1em")
+        .attr("fill","black");
+
+
+//클릭시 함수정의
+function func1(d){
+                angle =72*(d.index-1);
+                
+                if(d.i==1){
+                    for (var i=0;i<dataset.length;i++)
+                    {
+                        dataset[i]["name"]=temp1["nodes"][i];
+                    }
+                    for(var i=1;i<6;i++)
                 {
                     dataset[i].x_axis=cordi[i].x_axis;
                     dataset[i].y_axis=cordi[i].y_axis;
@@ -162,11 +243,34 @@ var ggg=gg.selectAll("g")
                     dataset[i].fr[j]["r"]=0;
                     dataset[i].fr[j]["x_axis"]=0;
                     dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["r"]=0;
+                    }
+                    
+                }
+                    d.i=0;
+                    console.dir(dataset);
+                    
+                }
+                else{
+                    for(var i=1;i<6;i++)
+                {
+                    dataset[i].x_axis=cordi[i].x_axis;
+                    dataset[i].y_axis=cordi[i].y_axis;
+                    dataset[i].r=r;
+                    dataset[i].i=0;
+                    for(var j=0;j<3;j++){
+                    dataset[i].fr[j]["name"]=null;
+                    dataset[i].fr[j]["r"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["r"]=0;
                     }
                 }
+                    d.r=r1
                     d.x_axis=(cordi[d.index].x_axis)/a*abig;
                     d.y_axis=(cordi[d.index].y_axis)/a*abig;
-                    d.r=r1
+                    
+                    d.i=1;
                     for(var i=0;i<3;i++){
                     d.fr[i]["name"]=frtemp["friends"][d.index][i];
                     d.fr[i]["r"]=rf;
@@ -176,124 +280,37 @@ var ggg=gg.selectAll("g")
                     d.fr[1]["y_axis"]=0;
                     d.fr[2]["y_axis"]=3*rf;
                     d.fr.r=rf;
+                }
+                    
+            
+}
+
+//여기서부터 gg클릭설정
+var click=  exg.on("click",function(d){
+            if(d.index == 1){
+                func1(d);
             }
             else if(d.index ==2 ){
-                angle = 72*1;
-                for(var i=1;i<6;i++)
-                {
-                    dataset[i].x_axis=cordi[i].x_axis;
-                    dataset[i].y_axis=cordi[i].y_axis;
-                    dataset[i].r=r;
-                    for(var j=0;j<3;j++){
-                    dataset[i].fr[j]["name"]=null;
-                    dataset[i].fr[j]["r"]=0;
-                    dataset[i].fr[j]["x_axis"]=0;
-                    dataset[i].fr[j]["x_axis"]=0;
-                    }
-                }
-                    d.x_axis=(cordi[d.index].x_axis)/a*abig;
-                    d.y_axis=(cordi[d.index].y_axis)/a*abig;
-                    d.r=r1
-                    for(var i=0;i<3;i++){
-                    d.fr[i]["name"]=frtemp["friends"][d.index][i];
-                    d.fr[i]["r"]=rf;
-                    d.fr[i]["x_axis"]=-a*0.5878*2*0.809-r+rf;}
-                    
-                    d.fr[0]["y_axis"]=-3*rf;
-                    d.fr[1]["y_axis"]=0;
-                    d.fr[2]["y_axis"]=3*rf;
-                    d.fr.r=rf;
+                func1(d);
             }
             else if(d.index ==3 ){
-                angle = 72*2;
-                 for(var i=1;i<6;i++)
-                {
-                    dataset[i].x_axis=cordi[i].x_axis;
-                    dataset[i].y_axis=cordi[i].y_axis;
-                    dataset[i].r=r;
-                    for(var j=0;j<3;j++){
-                    dataset[i].fr[j]["name"]=null;
-                    dataset[i].fr[j]["r"]=0;
-                    dataset[i].fr[j]["x_axis"]=0;
-                    dataset[i].fr[j]["x_axis"]=0;
-                    }
-                }
-                    d.x_axis=(cordi[d.index].x_axis)/a*abig;
-                    d.y_axis=(cordi[d.index].y_axis)/a*abig;
-                    d.r=r1
-                    for(var i=0;i<3;i++){
-                    d.fr[i]["name"]=frtemp["friends"][d.index][i];
-                    d.fr[i]["r"]=rf;
-                    d.fr[i]["x_axis"]=-a*0.5878*2*0.809-r+rf;}
-                    
-                    d.fr[0]["y_axis"]=-3*rf;
-                    d.fr[1]["y_axis"]=0;
-                    d.fr[2]["y_axis"]=3*rf;
-                    d.fr.r=rf;
+                func1(d);
             }
             else if(d.index ==4 ){
-                angle = 72*3;
-                for(var i=1;i<6;i++)
-                {
-                    dataset[i].x_axis=cordi[i].x_axis;
-                    dataset[i].y_axis=cordi[i].y_axis;
-                    dataset[i].r=r;
-                    for(var j=0;j<3;j++){
-                    dataset[i].fr[j]["name"]=null;
-                    dataset[i].fr[j]["r"]=0;
-                    dataset[i].fr[j]["x_axis"]=0;
-                    dataset[i].fr[j]["x_axis"]=0;
-                    }
-                }
-                    d.x_axis=(cordi[d.index].x_axis)/a*abig;
-                    d.y_axis=(cordi[d.index].y_axis)/a*abig;
-                    d.r=r1
-                    for(var i=0;i<3;i++){
-                    d.fr[i]["name"]=frtemp["friends"][d.index][i];
-                    d.fr[i]["r"]=rf;
-                    d.fr[i]["x_axis"]=-a*0.5878*2*0.809-r+rf;}
-                    
-                    d.fr[0]["y_axis"]=-3*rf;
-                    d.fr[1]["y_axis"]=0;
-                    d.fr[2]["y_axis"]=3*rf;
-                    d.fr.r=rf;
+                fucn1(d);
             }
             else if(d.index ==5 ){
-                angle = 72*4;
-                for(var i=1;i<6;i++)
-                {
-                    dataset[i].x_axis=cordi[i].x_axis;
-                    dataset[i].y_axis=cordi[i].y_axis;
-                    dataset[i].r=r;
-                    for(var j=0;j<3;j++){
-                    dataset[i].fr[j]["name"]=null;
-                    dataset[i].fr[j]["r"]=0;
-                    dataset[i].fr[j]["x_axis"]=0;
-                    dataset[i].fr[j]["x_axis"]=0;
-                    }
-                }
-                    d.x_axis=(cordi[d.index].x_axis)/a*abig;
-                    d.y_axis=(cordi[d.index].y_axis)/a*abig;
-                    d.r=r1
-                    for(var i=0;i<3;i++){
-                    d.fr[i]["name"]=frtemp["friends"][d.index][i];
-                    d.fr[i]["r"]=rf;
-                    d.fr[i]["x_axis"]=-a*0.5878*2*0.809-r+rf;}
-                    
-                    d.fr[0]["y_axis"]=-3*rf;
-                    d.fr[1]["y_axis"]=0;
-                    d.fr[2]["y_axis"]=3*rf;
-                    d.fr.r=rf;
+                func1(d);
             }
             //여기까지 각 노드별 클릭 셋팅
 
             //여기부터 클릭시 속성값 편짐
             g.transition()
-            // .delay(10)
+            .delay(0)
             .attr("transform","translate("+x+","+y+") rotate(-"+angle+")");
 
             gg.transition()
-            // .delay(10)
+            .delay(0)
             .attr("transform",function(d){
                 return  "translate("+d.x_axis+","+d.y_axis+")"+"rotate("+angle+")";});
 
@@ -310,7 +327,8 @@ var ggg=gg.selectAll("g")
 
             text.
             transition()
-            .attr("y",function(d){return -d.r-5;});
+            .attr("y",function(d){return -d.r-5;})
+            .text(function(d){return d.name;});
 
             ggg.transition()
             .delay(150)
@@ -321,71 +339,46 @@ var ggg=gg.selectAll("g")
                 // console.log(dataset[1].y_axis);
 
             gggcircle
-            .transition()
+            // .transition()
+            // .delay(150)
             .attr("r",function(d){return d.r;})
             .attr("fill","#98ff98");
 
             gggtext
+            .transition(0)
+            .delay(150)
             .text(function(d){return d.name;});
 
             // console.dir(dataset);
         });
-        
-            
-//여기까지 클릭 설정
 
-//gg설정
+//여기서부터 ggg클릭설정
 
-var clip = gg.append("clipPath")
-            .attr("id",function(d){return d.index;});
+        var clickggg=ggg.on("click",function(d){
+            // alert(d.name);
+        });
             
-            
-            
-  var circle =  clip.append("circle")
-        .attr("r",function(d){return d.r;})
-        .attr("fill","orange")
-        .attr("boder",5)
-        .attr("boder-radius","#98ff98");
-        
-        
+
+$(".ggg").click(function () {
+  var username = $(this)[0].textContent;
+
+  $.ajax({
+    url: '/graph/aa/',
+
+    data: {
+      'username': username
+    },
+    dataType: 'json',
+    success: function (data) {
+       // document.getElementById("tt").innerHTML = data;
+       console.dir(data)
+       // document.getElementById("tt").innerHTML = data.friends;
+    }
+  });
+
+});        
           
-
- var image =  gg.append("image")
-        .attr("xlink:href",function(d){return d.img;})
-        .attr("x",function(d){return -d.r;})
-        .attr("y",function(d){return -d.r;})
-         .attr("width",function(d){return d.r*2;})
-        .attr("height",function(d){return d.r*2;})
-        .attr("clip-path",function(d){return d.tag;}); 
-
-var text=   gg.append("text")
-        .text(function(d){return d.name;})
-    .attr("x",0)
-    .attr("y",function(d){return -d.r-5;})
-    .attr("font-family","sans-serif")
-    .attr("font-size","1.4em")
-    .attr("fill","black")
-    .attr("text-anchor","middle");
-
-
-// 여기 부터ggg 설정
-
-
-
-  
-            
-    var gggclip = ggg.append("clipPath")
-            .attr(function(d){return d.index;})
-            
-    var gggcircle=  ggg.append("circle")
-            .attr("r",function(d){return d.r;})
-            .attr("fill","#98ff98");
-
-    var gggtext = ggg.append("text")
-            // .text(function(d){return d.name;})
-            .attr("x",2*rf)
-        .attr("font-family","sans-serif")
-        .attr("font-size","1em")
-        .attr("fill","black");
-
 </script>
+
+
+<!-- <script src="{% static 'js/app.js' %}"></script> -->
