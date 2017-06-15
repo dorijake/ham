@@ -125,6 +125,7 @@ var friendset = [
 var temp = JSON.parse(jsonstr);
 var temp1 = JSON.parse(jsonstr1);
 var frtemp = {"friends":[
+                ["dummy"],
                 ["문재인","김민석","박종균"],
                 ["조우영","민연홍","이상혁"],
                 ["진종인","김철수","이영희"],
@@ -132,7 +133,7 @@ var frtemp = {"friends":[
                 ["메모리","디버거","검사기"]
                     ]};
 // temp["nodes"].unshift("Person");
-frtemp ["friends"].unshift("dummy");
+
 
 // console.dir(temp["nodes"]);
 
@@ -229,10 +230,10 @@ function func1(d){
                 angle =72*(d.index-1);
                 
                 if(d.i==1){
-                    for (var i=0;i<dataset.length;i++)
-                    {
-                        dataset[i]["name"]=temp1["nodes"][i];
-                    }
+                    // for (var i=0;i<dataset.length;i++)
+                    // {
+                    //     dataset[i]["name"]=temp1["nodes"][i];
+                    // }
                     for(var i=1;i<6;i++)
                 {
                     dataset[i].x_axis=cordi[i].x_axis;
@@ -297,7 +298,7 @@ var click=  exg.on("click",function(d){
                 func1(d);
             }
             else if(d.index ==4 ){
-                fucn1(d);
+                func1(d);
             }
             else if(d.index ==5 ){
                 func1(d);
@@ -352,33 +353,170 @@ var click=  exg.on("click",function(d){
             // console.dir(dataset);
         });
 
-//여기서부터 ggg클릭설정
+//여기서부터 ggg클릭 함수
+
+function set(d){
+    // angle=0;
+    for(var i=1;i<6;i++)
+                {
+                    dataset[i].x_axis=cordi[i].x_axis;
+                    dataset[i].y_axis=cordi[i].y_axis;
+                    dataset[i].r=r;
+                    for(var j=0;j<3;j++){
+                    dataset[i].fr[j]["name"]=null;
+                    dataset[i].fr[j]["r"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["x_axis"]=0;
+                    dataset[i].fr[j]["r"]=0;
+                    dataset[i].i=0;
+                    }
+                    
+                }
+                    
+
+    g.transition()
+            .delay(0)
+            .attr("transform","translate("+x+","+y+") rotate(-"+angle+")");
+
+            gg.transition()
+            .delay(0)
+            .attr("transform",function(d){
+                return  "translate("+d.x_axis+","+d.y_axis+")"+"rotate("+angle+")";});
+
+            circle
+            .transition()
+            .attr("r",function(d){return d.r;});
+
+            image
+            .transition()
+            .attr("x",function(d){return -d.r;})
+            .attr("y",function(d){return -d.r;})
+            .attr("width",function(d){return d.r*2;})
+            .attr("height",function(d){return d.r*2;});
+
+            text.
+            transition()
+            .attr("y",function(d){return -d.r-5;})
+            .text(function(d){return d.name;});
+
+            ggg.transition()
+            .delay(150)
+            .attr("transform",function(d){
+                return  "translate("+d.x_axis+","+d.y_axis+")";});
+   
+                // console.log(angle);
+                // console.log(dataset[1].y_axis);
+
+            gggcircle
+            // .transition()
+            // .delay(150)
+            .attr("r",function(d){return d.r;})
+            .attr("fill","#98ff98");
+
+            gggtext
+            .transition(0)
+            .delay(150)
+            .text(function(d){return d.name;});
+}
+
+//ggg클릭시 ajax입력
 
         var clickggg=ggg.on("click",function(d){
             // alert(d.name);
+            var username = d.name;
+            var i = 0;
+
+            $.ajax({
+                url: '/graph/aa/',
+
+                data: {
+                'username': username
+                },
+                dataType: 'json',
+                success: function (data) {
+                // document.getElementById("tt").innerHTML = data;
+                console.dir(data)
+                // document.getElementById("tt").innerHTML = data.friends;
+                for (var i=0;i<dataset.length;i++)
+                    {
+                        dataset[i]["name"]=data["nodes"][i];}
+                for(var i=0;i<5;i++){
+                                frtemp["friends"][i]=data["friends"][i];
+                }
+                console.dir(dataset);
+                console.dir(frtemp);
+                i = 1;
+                
+                }
+                
+            
+        })
+
+        while(i){
+            
+        }
+        setTimeout(function(d){
+            set(d);
+            
+        },100);
+        
+        
         });
             
 
-$(".ggg").click(function () {
-  var username = $(this)[0].textContent;
+// var testfunc = function(){  var username = $(this)[0].textContent;
 
-  $.ajax({
-    url: '/graph/aa/',
+//   $.ajax({
+//     url: '/graph/aa/',
 
-    data: {
-      'username': username
-    },
-    dataType: 'json',
-    success: function (data) {
-       // document.getElementById("tt").innerHTML = data;
-       console.dir(data)
-       // document.getElementById("tt").innerHTML = data.friends;
-    }
-  });
+//     data: {
+//       'username': username
+//     },
+//     dataType: 'json',
+//     success: function (data) {
+//        // document.getElementById("tt").innerHTML = data;
+//        console.dir(data)
+//        // document.getElementById("tt").innerHTML = data.friends;
+//        for (var i=0;i<dataset.length;i++)
+//         {
+//             dataset[i]["name"]=data["nodes"][i];}
+//       for(var i=0;i<5;i++){
+//                     frtemp["friends"][i]=data["friends"][i];
+//       }
+//     console.dir(dataset);
+//     console.dir(frtemp);
+    
+//     }})};
 
-});        
+// $(".ggg").click(function () {
+//   var username = $(this)[0].textContent;
+
+//   $.ajax({
+//     url: '/graph/aa/',
+
+//     data: {
+//       'username': username
+//     },
+//     dataType: 'json',
+//     success: function (data) {
+//        // document.getElementById("tt").innerHTML = data;
+//        console.dir(data)
+//        // document.getElementById("tt").innerHTML = data.friends;
+//        for (var i=0;i<dataset.length;i++)
+//         {
+//             dataset[i]["name"]=data["nodes"][i];}
+//       for(var i=0;i<5;i++){
+//                     frtemp["friends"][i]=data["friends"][i];
+//       }
+//     console.dir(dataset);
+//     console.dir(frtemp);
+    
+//     }
+//   });
+
+// });        
           
 </script>
+<!--
 
-
-<!-- <script src="{% static 'js/app.js' %}"></script> -->
+ <script src="{% static 'js/app.js' %}"></script>-->
