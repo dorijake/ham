@@ -132,6 +132,13 @@ var frtemp = {"friends":[
                 ["해리포터","김정균","정노철"],
                 ["메모리","디버거","검사기"]
                     ]};
+                    for(var i=1;i<6;i++)
+                {
+                    for(var j=0;j<3;j++){
+                    dataset[i].fr[j]["name"]=0;
+                    }
+                    
+                }
 // temp["nodes"].unshift("Person");
 
 
@@ -180,14 +187,18 @@ var ggg=gg.selectAll("g")
 
 //gg설정(exg설정)
 var exg = gg.append("g");
+            
 var clip = exg.append("clipPath")
-            .attr("id",function(d){return d.index;});
+            .attr("id",function(d){return d.index;})
+            .attr("z-index",function(d){if(d.index==0)return 2;
+            else return 1});
 
 var circle =  clip.append("circle")
         .attr("r",function(d){return d.r;})
         .attr("fill","orange")
         .attr("boder",5)
         .attr("boder-radius","#98ff98");
+        
 
 
 var image =  exg.append("image")
@@ -215,7 +226,10 @@ var text=   exg.append("text")
             
     var gggcircle=  ggg.append("circle")
             .attr("r",function(d){return d.r;})
-            .attr("fill","#98ff98");
+            .attr("fill",function(d){
+                if(d.name==0) return "white";
+                else return "ornage";
+            });
 
     var gggtext = ggg.append("text")
             // .text(function(d){return d.name;})
@@ -224,6 +238,9 @@ var text=   exg.append("text")
         .attr("font-size","1em")
         .attr("fill","black");
 
+var center = g.append("g")
+                .append("circle")
+                .attr("r",0);
 
 //클릭시 함수정의
 function func1(d){
@@ -240,7 +257,7 @@ function func1(d){
                     dataset[i].y_axis=cordi[i].y_axis;
                     dataset[i].r=r;
                     for(var j=0;j<3;j++){
-                    dataset[i].fr[j]["name"]=null;
+                    dataset[i].fr[j]["name"]=0;
                     dataset[i].fr[j]["r"]=0;
                     dataset[i].fr[j]["x_axis"]=0;
                     dataset[i].fr[j]["x_axis"]=0;
@@ -260,7 +277,7 @@ function func1(d){
                     dataset[i].r=r;
                     dataset[i].i=0;
                     for(var j=0;j<3;j++){
-                    dataset[i].fr[j]["name"]=null;
+                    dataset[i].fr[j]["name"]=0;
                     dataset[i].fr[j]["r"]=0;
                     dataset[i].fr[j]["x_axis"]=0;
                     dataset[i].fr[j]["x_axis"]=0;
@@ -340,15 +357,18 @@ var click=  exg.on("click",function(d){
                 // console.log(dataset[1].y_axis);
 
             gggcircle
-            // .transition()
+            .transition()
             // .delay(150)
-            .attr("r",function(d){return d.r;})
-            .attr("fill","#98ff98");
+            .attr("r",function(d){if(d.name==undefined)return 0;
+            else return d.r;})
+            .attr("fill","ornage");
+            console.dir(dataset);
 
             gggtext
             .transition(0)
             .delay(150)
-            .text(function(d){return d.name;});
+            .text(function(d){if(d.name!=0)return d.name;
+            else return;});
 
             // console.dir(dataset);
         });
@@ -363,7 +383,7 @@ function set(d){
                     dataset[i].y_axis=cordi[i].y_axis;
                     dataset[i].r=r;
                     for(var j=0;j<3;j++){
-                    dataset[i].fr[j]["name"]=null;
+                    dataset[i].fr[j]["name"]=0;
                     dataset[i].fr[j]["r"]=0;
                     dataset[i].fr[j]["x_axis"]=0;
                     dataset[i].fr[j]["x_axis"]=0;
@@ -372,9 +392,28 @@ function set(d){
                     }
                     
                 }
-                    
+                //모이기
+                gg.transition()
+                .attr("transform","translate(0,0)"+"rotate("+angle+")");
 
-    g.transition()
+                ggg.transition()
+                .delay(0)
+                .attr("transform",function(d){
+                return  "translate("+d.x_axis+","+d.y_axis+")";});
+
+                circle.transition()
+                .attr("r",function(d){if(d.index==0)return r0;
+                else return 0;});
+
+                center.transition()
+                .attr("r",r1)
+                .attr("fill","#54a8d4");
+                
+
+
+
+//다시 퍼지기
+                setTimeout(function(){g.transition()
             .delay(0)
             .attr("transform","translate("+x+","+y+") rotate(-"+angle+")");
 
@@ -411,12 +450,20 @@ function set(d){
             // .transition()
             // .delay(150)
             .attr("r",function(d){return d.r;})
-            .attr("fill","#98ff98");
+            .attr("fill","orange");
 
             gggtext
             .transition(0)
             .delay(150)
-            .text(function(d){return d.name;});
+            .text(function(d){if(d.name!=0)return d.name;
+            else return;});
+            
+            center.transition()
+                .attr("r",0);
+            
+            },200);
+
+            
 }
 
 //ggg클릭시 ajax입력
