@@ -18,6 +18,12 @@ class UserManager(UserManager):
 
 class User(AbstractUser):
 
+	def user_thumbnail_path(instance, filename):
+
+		# file will be uploaded to MEDIA_ROOT/thumb/<id>/<filename>
+		return "thumb/{0}/{1}".format(instance.user.id, filename)
+
+
 	SEX_CHOICES = (
 		("M", "Male"),
 		("W", "Female"),
@@ -25,16 +31,17 @@ class User(AbstractUser):
 
 	username = models.CharField(max_length=20, unique=True)
 	phone = models.CharField(max_length=11, unique=True)
-	img = models.CharField(max_length=255, null=True, blank=True)
+	thumbnail = models.ImageField(upload_to=user_thumbnail_path, null=True)
 	is_owner = models.BooleanField(default=0)
 	location1 = models.CharField(max_length=20, null=True, blank=True)
 	location2 = models.CharField(max_length=20, null=True, blank=True)
 	sex = models.CharField(max_length=1, choices=SEX_CHOICES, default="M")
-	
+
 	objects = UserManager()	
 
 
-# status of a relationship
+
+# status of relationship
 class Friends_Status(models.Model):
 	code = models.CharField(max_length=3, unique=True, primary_key=True)
 	name = models.CharField(max_length=200, unique=True)

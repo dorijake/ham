@@ -18,7 +18,7 @@
 	z-index: 1;
 	top:80;
 	left:0;
-	background-color: #111;
+	background-color: lightgray;
 	overflow-x:hidden;
 	padding-top:60px;
 	transition:0.5s;
@@ -84,7 +84,7 @@
 	<a href="/" class="navbar-brand collapse navbar-collapse">HAM</a>
 	<ul class="nav navbar-nav navbar-right collapse navbar-collapse">
 		{% if user.is_authenticated %}
-		<li><a href="#">{{ user.username }}</a></li>
+		<li><a href="/user/mypage">{{ user.username }}</a></li>
 		<li><a href="/logout">logout</a></li>
 		{% else %}
 		<li><a href="/login">Login</a></li>
@@ -119,8 +119,7 @@
 			sidenav.open();	
 		} else {
 			sidenav.close();
-		}
-		
+		}		
 	})
 	
 	$('.closebtn').click(function() {
